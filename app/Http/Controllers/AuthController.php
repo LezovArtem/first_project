@@ -81,8 +81,4 @@ class AuthController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
-
-    private function middleware(string $string, array $array)
-    {
-    }
 }

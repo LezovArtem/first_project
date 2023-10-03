@@ -39,7 +39,6 @@ class Service
             $tags = $data['tags'];
             unset($data['tags']);
 
-
             $post->update($data);
             $post->tags()->sync($tags);
 
@@ -62,6 +61,7 @@ class Service
             $data['category_id'] = $this->getCategoryIds($category);
             $tagIds = $this->getTagIds($tags);
 
+
             $post = Post::create($data);
             $post->tags()->attach($tagIds);
             DB::commit();
@@ -77,20 +77,23 @@ class Service
     public function apiUpdate($post, $data){
         try {
             DB::beginTransaction();
+
             $tags = $data['tags'];
             $category = $data['category'];
             unset($data['tags'], $data['category']);
 
 
             $data['category_id'] = $this->getUpdatedCategoryIds($category);
-            $tagIds = $this->getUpdatedTagIds($tags);
 
+            $tagIds = $this->getUpdatedTagIds($tags);
 
             $post->update($data);
             $post->tags()->sync($tagIds);
+
             DB::commit();
         } catch(Exception $exception){
             return $exception->getMessage();
+
             DB::rollBack();
         }
         return $post->fresh();

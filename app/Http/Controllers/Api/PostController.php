@@ -43,9 +43,10 @@ class PostController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Post $post)
+    public function update(UpdateRequest $request, string $id)
     {
         $data = $request -> validated();
+        $post = Post::find($id);
 
         $post = $this->service->apiUpdate($post, $data);
 
@@ -58,10 +59,9 @@ class PostController extends BaseController
     public function destroy(string $id)
     {
         $post = Post::findOrFail($id);
-        if($post)
-            $post->delete();
-        else
-            echo "loh";
+
+        $post->delete();
+
         return response()->json(null);
     }
 }
